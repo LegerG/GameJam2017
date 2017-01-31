@@ -1,12 +1,13 @@
 import pygame
 from pygame.locals import *
 
-import sys;
+
+
 
 pygame.init()
 
 fenetre = pygame.display.set_mode((700, 700), RESIZABLE)
-image = pygame.image.load("map.png").convert()
+image = pygame.image.load("Ressources/images/map.png").convert()
 pygame.display.flip()
 rectangle = Rect(600, 12 * 16, 16, 16)
 hero = pygame.image.load("hero.png").convert_alpha()
@@ -50,10 +51,27 @@ while sortie == 0:
 
 
     if touches[pygame.K_UP] == 0 and touches[pygame.K_DOWN] == 1:
-        pass
+
+        if (hero_rect.bottom <= decalement or scrolling_y >= hauteur_bg - fenetreSize[1]) and not (hero_rect.bottom > fenetreSize[1]):
+            hero_rect = hero_rect.move(0, speed[1])
+        elif hero_rect.bottom > decalement and scrolling_y < hauteur_bg - fenetreSize[1] :
+            scrolling_y += speed[1]
+
+        if hero_rect.bottom > fenetreSize[1]:
+            hero_rect.bottom = fenetreSize[1]
+
 
     elif touches[pygame.K_UP] == 1 and touches[pygame.K_DOWN] == 0:
-        pass
+
+        if (hero_rect.top >= (hauteur_bg - decalement) or scrolling_y < 0):
+            hero_rect = hero_rect.move(0, -speed[1])
+        elif hero_rect.top <= (fenetreSize[1] - decalement) or scrolling_y > 0:
+            scrolling_y -= speed[1]
+        elif hero_rect.bottom <= fenetreSize[1] and hero_rect.top >= fenetreSize[1] - decalement :
+            hero_rect = hero_rect.move(0, -speed[1])
+
+        if  (hero_rect.top < 0):
+            hero_rect.top = 0
 
 
     if rectangle.colliderect(hero_rect):
