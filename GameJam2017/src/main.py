@@ -1,10 +1,8 @@
 import pygame
-import Personnage
-import Map
+from Map import *
+from Personnage import *
 from pygame.locals import *
-import sys
 
-sys.path.insert(0, "../")
 
 
 
@@ -20,10 +18,9 @@ hero_rect = hero.get_rect()
 hero_rect.left = fenetreSize[0] - (fenetreSize[0]/2) - (hero_rect.width/2)
 #hero_rect.bottom = 600
 hero_rect.top = fenetreSize[1] - (fenetreSize[1]/2) - (hero_rect.height/2)
-scrolling_x = 0
-scrolling_y = 0;
-hauteur_bg = image.get_rect().height
 
+hauteur_bg = map.map_rect.height
+largeur_bg = map.map_rect.width
 sortie = 0
 horloge = pygame.time.Clock()
 
@@ -39,15 +36,15 @@ while sortie == 0:
     touches = pygame.key.get_pressed()
 
     if touches[pygame.K_RIGHT] == 1 and touches[pygame.K_LEFT] == 0:
-        if map.scrolling_x <= map.largeur_bg - fenetreSize[0]:
-            map.move((1,0))
+        if map.scrolling_x <= largeur_bg - fenetreSize[0]:
+            map.deplacer([1,0])
         else:
             pass    
 
 
     elif touches[pygame.K_RIGHT] == 0 and touches[pygame.K_LEFT] == 1:
         if map.scrolling_x <= 0:
-             map.move((-1,0))
+             map.deplacer([-1,0])
         else :
             pass
             
@@ -56,18 +53,18 @@ while sortie == 0:
 
         
         
-    if map.scrolling_y < hauteur_bg - fenetreSize[1]:
-        
-        
-        map.move((0,1))
+    if map.scrolling_y < hauteur_bg - fenetreSize[1]:        
+        map.deplacer([0,1])
         map.scrolling_y += 7
     else:
         pass
     
     
-    print hero_rect.right, scrolling_x
-    fenetre.blit(image, [0, 0], [scrolling_x, scrolling_y, fenetreSize[0], fenetreSize[1]])
-    fenetre.blit(hero, hero_rect)
+    fenetre.blit(map.image, map.map_rect)
+    
+    print hero_rect.right, map.scrolling_x, map.scrolling_y
+#    fenetre.blit(map.image, [0, 0], [map.scrolling_x, map.scrolling_y, fenetreSize[0], fenetreSize[1]])
+#    fenetre.blit(hero, hero_rect)
 
 
 

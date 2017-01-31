@@ -9,12 +9,11 @@ class Personnage(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Ressources/images/Bonhomme.png").convert_alpha()
-        self.hero_rect = image.get_rect()
+        self.hero_rect = self.image.get_rect()
         
         
         self.setup_bool()
         
     def setup_bool(self):
-        self.autoriser_saut = true
-        self.mort = false
-
+        self.autoriser_saut = True
+        self.mort = False
