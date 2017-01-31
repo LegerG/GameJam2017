@@ -1,4 +1,6 @@
 import pygame
+import Personnage
+import Map
 from pygame.locals import *
 import sys
 
@@ -9,7 +11,9 @@ sys.path.insert(0, "../")
 pygame.init()
 fenetreSize = (1000,700)
 fenetre = pygame.display.set_mode((fenetreSize[0], fenetreSize[1]), RESIZABLE)
-image = pygame.image.load("Ressources/images/map.png").convert()
+map = Map()
+hero = Personnage()
+
 pygame.display.flip()
 hero = pygame.image.load("Ressources/images/Bonhomme.png").convert_alpha()
 hero_rect = hero.get_rect()
@@ -19,10 +23,7 @@ hero_rect.top = fenetreSize[1] - (fenetreSize[1]/2) - (hero_rect.height/2)
 scrolling_x = 0
 scrolling_y = 0;
 hauteur_bg = image.get_rect().height
-largeur_bg = image.get_rect().width
 
-#2767 1200
-speed = (20, 20)
 sortie = 0
 horloge = pygame.time.Clock()
 
@@ -38,28 +39,28 @@ while sortie == 0:
     touches = pygame.key.get_pressed()
 
     if touches[pygame.K_RIGHT] == 1 and touches[pygame.K_LEFT] == 0:
-        if scrolling_x <= largeur_bg - fenetreSize[0]:
-            scrolling_x += speed[0]
+        if map.scrolling_x <= map.largeur_bg - fenetreSize[0]:
+            map.move((1,0))
         else:
             pass    
 
 
     elif touches[pygame.K_RIGHT] == 0 and touches[pygame.K_LEFT] == 1:
-        if scrolling_x <= 0:
-             scrolling_x -= speed[0]
+        if map.scrolling_x <= 0:
+             map.move((-1,0))
         else :
             pass
             
     if touches[pygame.K_SPACE] == 1:
-        scrolling_y -= 50;
+        map.jump()
 
         
         
-    if scrolling_y < hauteur_bg - fenetreSize[1]:
+    if map.scrolling_y < hauteur_bg - fenetreSize[1]:
         
         
-        scrolling_y += speed[1]
-        scrolling_y += 7
+        map.move((0,1))
+        map.scrolling_y += 7
     else:
         pass
     
