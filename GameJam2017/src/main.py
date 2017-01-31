@@ -19,7 +19,7 @@ hauteur_bg = image.get_rect().height
 largeur_bg = image.get_rect().width
 decalement = 275
 #2767 1200
-speed = (20, 10)
+speed = (20, 20)
 sortie = 0
 horloge = pygame.time.Clock()
 
@@ -34,11 +34,11 @@ while sortie == 0:
 
     touches = pygame.key.get_pressed()
 
-    if touches[pygame.K_RIGHT] == 1 and touches[pygame.K_LEFT] == 0:
+    if touches[pygame.K_RIGHT] == 1 and touches[pygame.K_LEFT] == 0 and scrolling_x <= largeur_bg - fenetreSize[0]:
 
-        if (hero_rect.right <= decalement or scrolling_x >= largeur_bg - fenetreSize[1]) and not (hero_rect.right > fenetreSize[1]):
+        if (hero_rect.right <= decalement or scrolling_x >= largeur_bg - fenetreSize[0]) and not (hero_rect.right > fenetreSize[0]):
             hero_rect = hero_rect.move(speed[0], 0)
-        elif hero_rect.right > decalement and scrolling_x < largeur_bg - fenetreSize[1] :
+        elif hero_rect.right > decalement and scrolling_x < largeur_bg - fenetreSize[0] :
             scrolling_x += speed[0]
 
 
@@ -46,7 +46,7 @@ while sortie == 0:
         if (hero_rect.left >= (largeur_bg - decalement) or scrolling_x < 0) and not (hero_rect.left < 0):
             hero_rect = hero_rect.move(-speed[0], 0)
             print "hero"
-        elif (2767 - 275) > hero_rect.left > (fenetreSize[1] - decalement):
+        elif (2767 - 275) > hero_rect.left > (fenetreSize[0] - decalement):
             scrolling_x -= speed[0]
             print "scroll"
 
@@ -74,8 +74,12 @@ while sortie == 0:
 
         if  (hero_rect.top < 0):
             hero_rect.top = 0
+            
+    if touches[pygame.K_SPACE] == 1:
+        scrolling_y -= 50;
 
-
+    
+    scrolling_y += 9.81
     print hero_rect.right, scrolling_x
     fenetre.blit(image, [0, 0], [scrolling_x, scrolling_y, fenetreSize[0], fenetreSize[1]])
     fenetre.blit(hero, hero_rect)
