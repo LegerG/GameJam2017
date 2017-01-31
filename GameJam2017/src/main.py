@@ -1,21 +1,23 @@
 import pygame
 from pygame.locals import *
+import sys
 
+sys.path.insert(0, "../")
 
 
 
 pygame.init()
-
-fenetre = pygame.display.set_mode((700, 700), RESIZABLE)
+fenetreSize = (1000,700)
+fenetre = pygame.display.set_mode((fenetreSize[0], fenetreSize[1]), RESIZABLE)
 image = pygame.image.load("Ressources/images/map.png").convert()
 pygame.display.flip()
-rectangle = Rect(600, 12 * 16, 16, 16)
-hero = pygame.image.load("hero.png").convert_alpha()
+hero = pygame.image.load("Ressources/images/hero.png").convert_alpha()
 hero_rect = hero.get_rect()
 scrolling_x = 0
 scrolling_y = 0;
-hero_rect.top = 100
-
+hauteur_bg = image.get_rect().height
+largeur_bg = image.get_rect().width
+decalement = 275
 #2767 1200
 speed = (20, 10)
 sortie = 0
@@ -34,17 +36,17 @@ while sortie == 0:
 
     if touches[pygame.K_RIGHT] == 1 and touches[pygame.K_LEFT] == 0:
 
-        if (hero_rect.right <= 275 or scrolling_x >= 2767 - 700) and not (hero_rect.right > 700):
+        if (hero_rect.right <= decalement or scrolling_x >= largeur_bg - fenetreSize[1]) and not (hero_rect.right > fenetreSize[1]):
             hero_rect = hero_rect.move(speed[0], 0)
-        elif hero_rect.right > 275 and scrolling_x < 2767 - 700 :
+        elif hero_rect.right > decalement and scrolling_x < largeur_bg - fenetreSize[1] :
             scrolling_x += speed[0]
 
 
     elif touches[pygame.K_RIGHT] == 0 and touches[pygame.K_LEFT] == 1:
-        if (hero_rect.left >= (2767 - 275) or scrolling_x < 0) and not (hero_rect.left < 0):
+        if (hero_rect.left >= (largeur_bg - decalement) or scrolling_x < 0) and not (hero_rect.left < 0):
             hero_rect = hero_rect.move(-speed[0], 0)
             print "hero"
-        elif (2767 - 275) > hero_rect.left > (700 - 275):
+        elif (2767 - 275) > hero_rect.left > (fenetreSize[1] - decalement):
             scrolling_x -= speed[0]
             print "scroll"
 
@@ -74,11 +76,8 @@ while sortie == 0:
             hero_rect.top = 0
 
 
-    if rectangle.colliderect(hero_rect):
-        print "OUI"
-
     print hero_rect.right, scrolling_x
-    fenetre.blit(image, [0, 0], [scrolling_x, scrolling_y, 800, 800])
+    fenetre.blit(image, [0, 0], [scrolling_x, scrolling_y, fenetreSize[0], fenetreSize[1]])
     fenetre.blit(hero, hero_rect)
 
 
